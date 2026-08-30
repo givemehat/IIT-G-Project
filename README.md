@@ -1,11 +1,5 @@
 # NASA Li-ion Battery Prognostics & RUL Aging Dataset
 
-[![Dataset](https://img.shields.io/badge/Dataset-NASA%20PCoE-orange.svg)](https://data.nasa.gov/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Format: CSV](https://img.shields.io/badge/Format-CSV-blue.svg)]()
-[![Cells: 32](https://img.shields.io/badge/Cells-32%20Li--ion%20Batteries-green.svg)]()
-[![Total Cycles: 2,744](https://img.shields.io/badge/Total%20Cycles-2%2C744-purple.svg)]()
-
 A curated, clean, and benchmark-ready dataset for **Battery Health Monitoring**, **State of Health (SOH) Estimation**, and **Remaining Useful Life (RUL) Prediction** for Autonomous Underwater Vehicles (AUVs), Electric Vehicles (EVs), and Energy Storage Systems (ESS).
 
 Derived from the official **NASA Prognostics Center of Excellence (PCoE) Battery Aging Data Set** (ARC-FY08Q4 and ARC 25–56) with standardized cycle telemetry, electrochemical health indicators, and capacity regeneration tags.
@@ -118,39 +112,3 @@ print(f"Train samples: {len(train_df)} | Val samples: {len(val_df)} | Test sampl
 
 ---
 
-## 📖 Citation & References
-
-If you use this dataset in your research, please cite:
-
-```bibtex
-@article{qiu2024lithium,
-  title={A Lithium-Ion Battery Remaining Useful Life Prediction Model Based on CEEMDAN Data Preprocessing and HSSA-LSTM-TCN},
-  author={Qiu, Shaoming and Zhang, Bo and Lv, Yana and Zhang, Jie and Zhang, Chao},
-  journal={World Electric Vehicle Journal},
-  volume={15},
-  number={5},
-  pages={177},
-  year={2024},
-  publisher={MDPI}
-}
-
-@article{ma2025state,
-  title={The state of the art in key technologies for autonomous underwater vehicles: a review},
-  author={Ma, Dong and Li, Ye and Ma, Teng and Pascoal, Ant{\'o}nio M},
-  journal={Engineering / Ocean Engineering},
-  year={2025},
-  publisher={Elsevier}
-}
-
-@misc{nasa_pcoe_battery,
-  title={Li-ion Battery Aging Data Set},
-  author={Saha, Bhaskar and Goebel, Kai},
-  year={2007},
-  publisher={NASA Ames Prognostics Center of Excellence (PCoE)}
-}
-```
-
----
-
-## 📄 License
-This dataset is distributed under the [MIT License](LICENSE).
