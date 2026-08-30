@@ -1,114 +1,78 @@
-# NASA Li-ion Battery Prognostics & RUL Aging Dataset
+# Battery Health Prognostics & Remaining Useful Life (RUL) Prediction for Autonomous Underwater Vehicles (AUVs)
 
-A curated, clean, and benchmark-ready dataset for **Battery Health Monitoring**, **State of Health (SOH) Estimation**, and **Remaining Useful Life (RUL) Prediction** for Autonomous Underwater Vehicles (AUVs), Electric Vehicles (EVs), and Energy Storage Systems (ESS).
+[![TIH IIT Guwahati](https://img.shields.io/badge/TIH%20IIT%20Guwahati-Internship%20Phase-00529B.svg)](https://tih.iitg.ac.in)
+[![Track](https://img.shields.io/badge/Track-Group%20O4-blue.svg)]()
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C.svg?style=flat&logo=pytorch)](https://pytorch.org)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB.svg?style=flat&logo=python)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![NASA Dataset](https://img.shields.io/badge/Dataset-NASA%20PCoE-orange.svg)](https://data.nasa.gov/)
 
-Derived from the official **NASA Prognostics Center of Excellence (PCoE) Battery Aging Data Set** (ARC-FY08Q4 and ARC 25–56) with standardized cycle telemetry, electrochemical health indicators, and capacity regeneration tags.
+An end-to-end, production-grade deep learning framework for **Battery State of Health (SOH)** estimation and **Remaining Useful Life (RUL)** forecasting under marine mission profiles and dynamic degradation dynamics.
+
+Developed as part of the **TIH IIT Guwahati 4-Week Online Internship Research Project** (Group O4).
 
 ---
 
-## 📁 Repository Structure
+## 📌 Submission Milestones & Review Deliverables
+
+| Milestone / Stage | Deliverable Document | Key Content & Inclusions |
+| :--- | :--- | :--- |
+| **Pre-Dataset Readiness & Mentor Review (Day 6)** | [Methodology Document V1](docs/methodology_v1.md) | **Methodology V1**: Mathematical SOH & RUL definitions, literature review (*Qiu et al., 2024*, *Ma et al., 2025*), data-readiness package (34 NASA cells, 2,744 cycles), CEEMDAN decomposition, 8-model architecture zoo, and multi-task loss ($\mathcal{L}_{\text{RUL}} + 10.0 \cdot \mathcal{L}_{\text{cap}}$). |
+| **Mentor Decision & Corrections Log** | [Mentor Review Corrections](reports/mentor_review_corrections.md) | **Mentor Corrections**: Confirmed EOL failure thresholds ($1.40\text{ Ah}$ for B0005/6/18, $1.50\text{ Ah}$ for B0007), strict cell-wise zero-leakage split, out-of-sample scaling, capacity regeneration modeling, and AUV embedded edge constraints. |
+| **Updated Experiment Plan** | [Updated Experiment Plan](experiments/updated_experiment_plan.md) | **Experiment Plan V1**: 8-model comparison matrix, hyperparameter search grids (AdamW, $\eta=10^{-3}$, cosine decay), sequence length ($L=15$) ablation plan, multi-task weight sensitivity, and cross-cell generalization folds. |
+| **Mentor Review Presentation** | [3-Slide Review Pack](reports/mentor_review_2_presentation_pack.md) | **Mentor Review 2 Pack**: Slide 1 (Pre-Dataset Readiness), Slide 2 (Preprocessing, Modeling & Evaluation Plan), Slide 3 (Mentor Corrections & Validated Constraints). |
+| **Week 2 — Day 1** | [Problem Understanding](docs/week2_day1_problem_understanding_and_system_definition.md) | Technical problem formulation, mathematical SOH/RUL definitions, end-to-end software pipeline diagram, and 8+ mentor review questions. |
+| **Week 2 — Day 2** | [Data Exploration & Baseline](docs/week2_day2_data_exploration_and_baseline_experiment.md) | Quality audit of 34 NASA cells (2,744 cycles), leakage-safe split, empirical baseline vs Random Forest vs 6 deep learning models, challenges & findings. |
+| **Interactive Submission Notebook** | [Week 2 Submission Notebook](notebooks/week2_day1_day2_submission.ipynb) | Executable Jupyter walkthrough of data inspection, baseline experiments, and benchmark visualization. |
+
+---
+
+## 🌟 Key Highlights & Innovations
+
+- **Domain-Specific Formulation**: Formulated for Autonomous Underwater Vehicles (AUVs) and marine energy storage systems facing thermal gradients and pulsed load surges (*Ma et al., 2025*).
+- **Novel Hybrid Architecture**: Proposed **CEEMDAN-TCN-BiLSTM-DualAttention** network combining multi-scale dilated causal temporal convolutions, squeeze-and-excitation channel attention, bidirectional recurrent units, and multi-head self-attention (*Qiu et al., 2024*).
+- **Capacity Regeneration Modeling**: Explicitly models non-linear electrochemical capacity rebound during resting intervals.
+- **Strict Leakage Prevention**: Full zero-shot cross-cell validation (Trained on `B0005` & `B0006`, validated on `B0007`, tested out-of-sample on `B0018`).
+- **Comprehensive Benchmarks**: Compares 8 distinct prognostic algorithms across MAE, RMSE, MAPE, $R^2$, training duration, inference latency, and model size.
+
+---
+
+## 📂 Repository Structure
 
 ```tree
-battery-health-rul-dataset/
 ├── data/
-│   ├── nasa_battery_cycles.csv        # Master dataset (2,744 cycles across all 32 cells)
-│   ├── B0005_cycles.csv               # Benchmark Cell 5 (168 discharge cycles)
-│   ├── B0006_cycles.csv               # Benchmark Cell 6 (168 discharge cycles)
-│   ├── B0007_cycles.csv               # Benchmark Cell 7 (168 discharge cycles)
-│   ├── B0018_cycles.csv               # Benchmark Cell 18 (132 discharge cycles)
-│   ├── B0025_cycles.csv ... B0056_cycles.csv  # Additional 28 NASA aging cells
-│   └── auv_mission_profile_cycles.csv # Simulated AUV mission profile with thermal variations
-├── LICENSE                            # MIT License
-└── README.md                          # Comprehensive dataset documentation
-```
-
----
-
-## 📊 Benchmark Cells Summary
-
-| Cell ID | Chemistry | Nominal Capacity | Ambient Temp | EOL Threshold | EOL Cycle | Total Discharge Cycles | Primary Usage |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **B0005** | LiCoO2 (18650) | 2.0 Ah | 24°C | 1.40 Ah (70% SOH) | Cycle 124 | 168 | Model Training |
-| **B0006** | LiCoO2 (18650) | 2.0 Ah | 24°C | 1.40 Ah (70% SOH) | Cycle 109 | 168 | Model Training |
-| **B0007** | LiCoO2 (18650) | 2.0 Ah | 24°C | 1.50 Ah (75% SOH)* | Cycle 148 | 168 | Model Validation |
-| **B0018** | LiCoO2 (18650) | 2.0 Ah | 24°C | 1.40 Ah (70% SOH) | Cycle 96 | 132 | Zero-Shot Out-of-Sample Test |
-| **B0025–B0056** | LiCoO2 (18650) | 2.0 Ah | Various (4°C–44°C) | 1.40 Ah | Variable | 2,108 | Large-Scale Pretraining & Robustness |
-| **AUV_PACK** | Li-ion Marine | 2.0 Ah | 4°C–20°C (Ocean Depth) | 1.40 Ah | Cycle 142 | 200 | Underwater Vehicle Mission Simulation |
-
-*\*Note: For B0007, the capacity did not drop below 1.40 Ah during the experiment, so 1.50 Ah is the standard research failure threshold per Qiu et al. (2024).*
-
----
-
-## 📋 Data Schema & Column Definitions
-
-Each CSV file is structured cycle-by-cycle with the following columns:
-
-| Column Name | Data Type | Units | Description |
-| :--- | :---: | :---: | :--- |
-| `cell_id` | `string` | — | Unique identifier of the battery cell (e.g. `B0005`, `B0018`) |
-| `cycle_index` | `integer` | — | Sequential index of the discharge cycle ($1, 2, 3, \dots$) |
-| `raw_cycle_idx` | `integer` | — | Original raw telemetry index (includes charge & impedance cycles) |
-| `ambient_temperature`| `float` | °C | Ambient room / environmental chamber temperature |
-| `capacity` | `float` | Ah | Discharge capacity extracted from constant current / voltage discharge |
-| `soh` | `float` | % | State of Health ($\frac{C_k}{C_{\text{nominal}}} \times 100\%$, $C_{\text{nominal}} = 2.0\text{ Ah}$) |
-| `v_start` | `float` | V | Terminal voltage at the beginning of discharge |
-| `v_end` | `float` | V | Cut-off terminal voltage at the conclusion of discharge |
-| `v_min` | `float` | V | Minimum measured voltage during the discharge profile |
-| `v_mean` | `float` | V | Average voltage throughout the discharge cycle |
-| `v_std` | `float` | V | Standard deviation of voltage trajectory |
-| `i_mean` | `float` | A | Mean discharge current drawn |
-| `t_start` | `float` | °C | Cell surface temperature at cycle start |
-| `t_max` | `float` | °C | Peak maximum temperature reached during discharge |
-| `t_mean` | `float` | °C | Mean cell surface temperature over the cycle |
-| `t_rise` | `float` | °C | Thermal elevation ($\Delta T = T_{\text{max}} - T_{\text{start}}$) |
-| `discharge_duration` | `float` | seconds | Total duration of the discharge cycle |
-| `energy_discharged` | `float` | Wh | Total electrical energy delivered ($\int V \cdot I \, dt$) |
-| `eol_threshold` | `float` | Ah | End-of-Life capacity failure threshold |
-| `eol_cycle` | `integer` | — | Cycle number where capacity permanently falls below EOL threshold |
-| `rul_true` | `integer` | cycles | Ground truth Remaining Useful Life ($\max(0, \text{EOL Cycle} - \text{Cycle Index})$) |
-| `capacity_diff` | `float` | Ah | Cycle-to-cycle capacity change ($\Delta C = C_k - C_{k-1}$) |
-| `is_regeneration` | `integer` | binary | $1$ if $\Delta C > 0.005\text{ Ah}$ (electrochemical rest rebound event), $0$ otherwise |
-| `degradation_rate` | `float` | Ah/cycle | 5-cycle rolling slope of capacity loss |
-
----
-
-## ⚡ Quickstart: How to Load & Use in Python
-
-### 1. Load with Pandas
-```python
-import pandas as pd
-
-# Load master combined dataset
-df_all = pd.read_csv("data/nasa_battery_cycles.csv")
-print(f"Total cycle records: {len(df_all)}")
-print(f"Available cells: {df_all['cell_id'].unique()}")
-
-# Load specific benchmark cell
-df_b0005 = pd.read_csv("data/B0005_cycles.csv")
-print(df_b0005[['cycle_index', 'capacity', 'soh', 'rul_true', 'is_regeneration']].head())
-```
-
-### 2. Prepare Zero-Leakage Cross-Cell Train/Val/Test Splits
-```python
-import pandas as pd
-
-df = pd.read_csv("data/nasa_battery_cycles.csv")
-
-# Strict zero-leakage cross-cell split
-train_df = df[df['cell_id'].isin(['B0005', 'B0006'])].reset_index(drop=True)
-val_df   = df[df['cell_id'] == 'B0007'].reset_index(drop=True)
-test_df  = df[df['cell_id'] == 'B0018'].reset_index(drop=True)
-
-print(f"Train samples: {len(train_df)} | Val samples: {len(val_df)} | Test samples: {len(test_df)}")
-```
-
----
-
-## 🔬 Electrochemical Phenomenon Notes
-
-1. **Capacity Regeneration**: After resting periods between discharge runs, internal concentration gradients equilibrate, leading to temporary capacity spikes ($\Delta C > 0$). This non-monotonic behavior is tagged in `is_regeneration`.
-2. **Thermal Growth with Aging**: As internal resistance increases due to SEI (Solid Electrolyte Interphase) layer growth, `t_rise` ($\Delta T$) increases significantly across late cycles.
-3. **Knee-Point Acceleration**: Degradation transitions from steady linear fade to accelerated exponential decay near the EOL threshold (70% SOH).
-
----
-
+│   ├── raw/                # 34 NASA .mat battery aging files
+│   └── processed/          # Cleaned cycle-by-cycle tabular CSVs (B0005-B0056)
+├── docs/
+│   ├── methodology_v1.md   # Comprehensive Methodology V1 (Approved)
+│   ├── mentor_review_corrections.md # Mentor feedback and decision log
+│   ├── week2_day1_problem_understanding_and_system_definition.md
+│   └── week2_day2_data_exploration_and_baseline_experiment.md
+├── experiments/
+│   ├── updated_experiment_plan.md   # Detailed experiment matrix & ablation plans
+│   └── training.log        # Hardware execution & training logs
+├── notebooks/
+│   ├── week2_day1_day2_submission.ipynb
+│   ├── 01_exploratory_data_analysis.ipynb
+│   ├── 02_model_training_and_benchmarking.ipynb
+│   └── 03_robustness_and_cross_cell_evaluation.ipynb
+├── reports/
+│   ├── mentor_review_2_presentation_pack.md  # 3-Slide Mentor Review 2 Pack
+│   ├── mentor_review_corrections.md          # Itemized feedback traceability table
+│   ├── week2_mentor_review_progress_pack.md  # Week 2 Day 1-2 Progress Pack
+│   └── final_research_report.md              # Comprehensive research report
+├── results/
+│   ├── figures/            # High-resolution publication-quality plots (300 DPI)
+│   └── metrics/            # CSV and Markdown benchmark comparison tables
+├── saved_models/           # Serialized PyTorch model checkpoints (.pt)
+├── src/
+│   ├── data/               # NASA/CALCE parsers and AUV mission simulator
+│   ├── features/           # Signal decomposition & sliding window builders
+│   ├── models/             # PyTorch architectures (LSTM, GRU, TCN, BiLSTM-Attn, Transformer, Hybrid)
+│   ├── training/           # PyTorch multi-task training engine with EarlyStopping
+│   ├── evaluation/         # Metrics, degradation-stage robustness & failure analysis
+│   └── utils/              # Seed control, hardware accelerator detection, loggers
+├── eda.py                  # Automated Exploratory Data Analysis pipeline
+├── train_and_benchmark.py  # End-to-end model training & evaluation pipeline
+├── requirements.txt        # Python dependency manifest
+└── README.md               # Project documentation
