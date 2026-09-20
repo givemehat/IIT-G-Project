@@ -1,0 +1,45 @@
+[2026-08-21 18:08:59 | INFO | BatteryEDA]: Starting Comprehensive Exploratory Data Analysis (EDA)...
+[2026-08-21 18:09:00 | INFO | BatteryEDA]: NASA dataset: 0 total cycle records across 0 cells.
+[2026-08-21 18:09:01 | INFO | BatteryEDA]: Saved Fig 1: Capacity Degradation Curves.
+[2026-08-21 18:09:01 | INFO | BatteryEDA]: Saved Fig 2: Capacity Regeneration Zoom.
+[2026-08-21 18:09:01 | INFO | BatteryEDA]: Saved Fig 3: Thermal Evolution.
+[2026-08-21 18:09:01 | INFO | BatteryEDA]: EDA Completed successfully! All figures saved in results/figures.
+[2026-08-21 18:11:08 | INFO | BatteryEDA]: Starting Comprehensive Exploratory Data Analysis (EDA)...
+[2026-08-21 18:11:09 | INFO | BatteryEDA]: NASA dataset: 2744 total cycle records across 32 cells.
+[2026-08-21 18:11:09 | INFO | BatteryEDA]: Saved Fig 1: Capacity Degradation Curves.
+[2026-08-21 18:11:09 | INFO | BatteryEDA]: Saved Fig 2: Capacity Regeneration Zoom.
+[2026-08-21 18:11:09 | INFO | BatteryEDA]: Saved Fig 3: Thermal Evolution.
+[2026-08-21 18:11:09 | INFO | BatteryEDA]: Saved Fig 4: Correlation Matrix.
+[2026-08-21 18:11:10 | INFO | BatteryEDA]: Saved Fig 5: Signal Decomposition.
+[2026-08-21 18:11:10 | INFO | BatteryEDA]: EDA Completed successfully! All figures saved in results/figures.
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: Using compute device: mps
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: Loaded 2744 total cycle records.
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: Dataset shapes -> Train: (308, 15, 9), Val: (154, 15, 9), Test: (118, 15, 9)
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: --- Evaluating Empirical Baseline ---
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: --- Evaluating Classical Random Forest Baseline ---
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: Training Architecture: LSTM
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: Parameter Count: 52,610
+[2026-08-21 18:12:15 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:12:27 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:12:27 | INFO | BatteryBenchmark]: Training Architecture: GRU
+[2026-08-21 18:12:27 | INFO | BatteryBenchmark]: Parameter Count: 39,490
+[2026-08-21 18:12:27 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:12:50 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:12:50 | INFO | BatteryBenchmark]: Training Architecture: TCN
+[2026-08-21 18:12:50 | INFO | BatteryBenchmark]: Parameter Count: 107,554
+[2026-08-21 18:12:50 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:12:55 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:12:55 | INFO | BatteryBenchmark]: Training Architecture: BiLSTM-Attention
+[2026-08-21 18:12:55 | INFO | BatteryBenchmark]: Parameter Count: 220,674
+[2026-08-21 18:12:55 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:13:05 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:13:05 | INFO | BatteryBenchmark]: Training Architecture: Temporal Transformer
+[2026-08-21 18:13:05 | INFO | BatteryBenchmark]: Parameter Count: 67,714
+[2026-08-21 18:13:05 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:13:17 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:13:17 | INFO | BatteryBenchmark]: Training Architecture: Proposed Hybrid SOTA (CEEMDAN-TCN-BiLSTM-DualAttention)
+[2026-08-21 18:13:17 | INFO | BatteryBenchmark]: Parameter Count: 293,090
+[2026-08-21 18:13:17 | INFO | BatteryBenchmark]: ========================================
+[2026-08-21 18:13:22 | INFO | BatteryBenchmark]: Running Degradation Stage Robustness on Best Model: TCN
+[2026-08-21 18:13:22 | INFO | BatteryBenchmark]: Benchmarking and Visualization complete! Results saved in results/metrics and results/figures.
